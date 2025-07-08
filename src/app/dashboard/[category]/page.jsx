@@ -69,20 +69,28 @@ export default function CategoryPage() {
               <h2 className="text-lg font-semibold mb-2">{name}</h2>
               <p className="text-lg font-semibold text-green-400">₹ {Number(price).toFixed(2)}</p>
               <div className="mt-auto flex space-x-4">
-                <button
-                  onClick={() => addToCart({ id, name, price, image })}
-                  className="btn flex-grow bg-purple-600 hover:bg-purple-700"
-                >
-                  Add to Cart
-                </button>
-                <button
-  onClick={() => handleBuyNow({ id, name, price, image })}
-  className="btn flex-grow bg-green-600 hover:bg-green-700"
->
-  Buy Now
-</button>
+  <button
+    onClick={() => addToCart({ id, name, price, image })}
+    className="btn flex-grow bg-purple-600 hover:bg-purple-700"
+  >
+    Add to Cart
+  </button>
+  <button
+    onClick={() => handleBuyNow({ id, name, price, image })}
+    className="btn flex-grow bg-green-600 hover:bg-green-700"
+  >
+    Buy Now
+  </button>
+  {category === 'customize-pc' && (
+    <button
+      onClick={() => router.push(`/customize/${id}`)}
+      className="btn flex-grow bg-blue-600 hover:bg-blue-700"
+    >
+      Customize
+    </button>
+  )}
+</div>
 
-              </div>
             </div>
           </div>
         ))}
