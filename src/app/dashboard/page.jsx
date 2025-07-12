@@ -11,9 +11,9 @@ const bannerImages = [
 
 const options = [
   {
-    label: 'Buy Prebuilt PC',
+    label: 'Prebuilt PC Setup',
     path: '/dashboard/prebuilt-pc',
-    image: '/images/prebuilt-pc.jpg',
+    image: '/images/prebuilt-pc3.jpg',
   },
   {
     label: 'Customize Your Own PC',

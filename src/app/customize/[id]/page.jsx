@@ -3,6 +3,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { usePcPartsStore } from '@/store/usePcPartsStore';
+import { useProductStore } from '@/store/useProductStore';
 
 export default function CustomizePage() {
   const { id } = useParams();
@@ -15,12 +16,15 @@ export default function CustomizePage() {
     storage: '',
     gpu: '',
   });
+  const { products, fetchProductsByCategory } = useProductStore();
 
   const { parts: allParts, loading, error, fetchAllParts } = usePcPartsStore();
 
   useEffect(() => {
     fetchAllParts();
+    fetchProductsByCategory('customize-pc');
   }, []);
+  
 
   const handleChange = (e) => {
     setParts({ ...parts, [e.target.name]: e.target.value });
@@ -33,13 +37,16 @@ export default function CustomizePage() {
       return acc;
     }, {});
       
-    const customizedProduct = {
-      id,
-      name: 'Custom Build',
-      image: '/images/customize-pc.jpg',
-      price: 1999.99,
-      ...selectedItems,
-    };
+    const selectedImage = products.find((p) => p.id == id)?.image || '/images/customize-pc.jpg';
+
+const customizedProduct = {
+  id,
+  name: 'Custom Build',
+  image: selectedImage,
+  price: Number(calculateTotalPrice()),
+  ...selectedItems,
+};
+
 
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
     cart.push({ ...customizedProduct, quantity: 1 });
@@ -51,19 +58,11 @@ export default function CustomizePage() {
     let total = 0;
     for (const [key, id] of Object.entries(parts)) {
       const selected = allParts[key]?.find((item) => item.id === parseInt(id));
-      if (selected) total += Number(selected.price); // ensures numeric addition
+      if (selected) total += Number(selected.price); 
     }
-    return total.toFixed(2); // optional: round to 2 decimal places
+    return total.toFixed(2); 
   };
   
-
-  const renderOptions = (category) => {
-    return allParts[category]?.map((item) => (
-      <option key={item.id} value={item.id}>
-        {item.name}
-      </option>
-    ));
-  };
 
   return (
     <div className="min-h-screen p-6 text-white bg-gray-900">
@@ -94,9 +93,10 @@ export default function CustomizePage() {
                     >
                       <option value="">Select {category}</option>
                       {allParts[category]?.map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {item.name}
-                        </option>
+                       <option key={`${category}-${item.id}`} value={item.id}>
+                       {item.name}
+                     </option>
+                     
                       ))}
                     </select>
                   </div>
@@ -147,10 +147,12 @@ export default function CustomizePage() {
                     alt={selected.name}
                     className="w-16 h-16 object-cover rounded border border-gray-700"
                   />
-                  <div>
-                    <p className="font-medium text-white">{selected.name}</p>
-                    <p className="text-sm text-gray-400">₹{selected.price}</p>
-                  </div>
+                 <div>
+  <p className="font-medium text-white">{selected.name}</p>
+  <p className="text-sm text-gray-400">₹{selected.price}</p>
+  <p className="text-sm text-gray-500 mt-1">{selected.specification}</p>
+</div>
+
                 </div>
               ) : null;
             })}

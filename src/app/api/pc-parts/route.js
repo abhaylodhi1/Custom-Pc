@@ -10,7 +10,7 @@ export async function GET() {
 
     for (const category of categories) {
       const [rows] = await db.execute(
-        'SELECT id, name, image, price, brand, stock FROM pc_parts WHERE category = ?',
+        'SELECT id, name, image, price, brand, stock,specification FROM pc_parts WHERE category = ?',
         [category]
       );
       result[category] = rows;
