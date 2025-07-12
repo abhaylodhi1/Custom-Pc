@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Mail, Phone, MapPin, User, Landmark } from 'lucide-react';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -36,32 +37,42 @@ export default function CheckoutPage() {
     router.push('/payment');
   };
 
+  const fields = [
+    { name: 'name', label: 'Full Name', icon: <User size={18} /> },
+    { name: 'email', label: 'Email', icon: <Mail size={18} /> },
+    { name: 'phone', label: 'Phone Number', icon: <Phone size={18} /> },
+    { name: 'address', label: 'Address', icon: <MapPin size={18} /> },
+    { name: 'city', label: 'City', icon: <MapPin size={18} /> },
+    { name: 'pincode', label: 'Pincode', icon: <MapPin size={18} /> },
+    { name: 'state', label: 'State', icon: <Landmark size={18} /> },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e1b4b] to-[#0f172a] text-white p-8">
-      <h1 className="text-3xl font-bold text-center mb-6">Shipping Details</h1>
-      <div className="max-w-2xl mx-auto bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg space-y-4">
-        {[
-          { name: 'name', label: 'Full Name' },
-          { name: 'email', label: 'Email' },
-          { name: 'phone', label: 'Phone Number' },
-          { name: 'address', label: 'Address' },
-          { name: 'city', label: 'City' },
-          { name: 'pincode', label: 'Pincode' },
-          { name: 'state', label: 'State' },
-        ].map(({ name, label }) => (
-          <input
-            key={name}
-            name={name}
-            value={form[name]}
-            onChange={handleChange}
-            placeholder={label}
-            className="w-full p-3 rounded-md bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-400"
-          />
-        ))}
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-950 to-black p-8 text-white">
+      <h1 className="text-4xl font-extrabold text-center mb-10">Shipping Details</h1>
+
+      <div className="max-w-3xl mx-auto bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-2xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {fields.map(({ name, label, icon }) => (
+            <div key={name} className="relative">
+              <label className="block mb-1 text-sm font-medium text-gray-300">{label}</label>
+              <div className="flex items-center bg-gray-900 border border-gray-700 rounded-lg px-3">
+                <span className="text-gray-400">{icon}</span>
+                <input
+                  name={name}
+                  value={form[name]}
+                  onChange={handleChange}
+                  placeholder={label}
+                  className="w-full p-3 bg-transparent outline-none text-white placeholder-gray-400"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
 
         <button
           onClick={handleContinue}
-          className="w-full py-3 bg-purple-600 hover:bg-purple-700 rounded-lg font-semibold"
+          className="mt-8 w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 rounded-xl font-semibold text-lg transition-all duration-300 shadow-md"
         >
           Continue to Payment
         </button>
