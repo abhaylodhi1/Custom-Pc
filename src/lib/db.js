@@ -1,12 +1,11 @@
-// lib/db.js
 import mysql from 'mysql2/promise';
 
 export async function connectDB() {
   return mysql.createConnection({
-    host: 'localhost',
-    port: 3307, // Default MySQL port
-    user: 'root',
-    password: '', // default XAMPP password
-    database: 'pc_gaming_db',
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
   });
 }
