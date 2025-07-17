@@ -16,7 +16,7 @@ export async function POST(req) {
 
   let profile_pic_url = '/images/default-avatar.png';
 
-  if (file && typeof file.name === 'string') {
+  if (false && file && typeof file.name === 'string') {
     const buffer = Buffer.from(await file.arrayBuffer());
     const fileName = uuidv4() + path.extname(file.name);
     const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
